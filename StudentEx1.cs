@@ -4,7 +4,7 @@ namespace ConsoleApp1
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             int n = 5;
             int i;
@@ -16,71 +16,96 @@ namespace ConsoleApp1
             decimal max = 0;
             decimal[] averageCopy = new decimal[n];
 
+
             for (i = 0; i < n; i++)
             {
-                Console.WriteLine("Pleae enter values of student {0}", i);
-;                
+                Console.WriteLine("Please enter values of student {0}", i);
+
+            error1:
                 string[] values = Console.ReadLine().Split(' ');
 
-
-                name[i] = values[0];
-                grade1[i] = Convert.ToInt32(values[1]);
-                grade2[i] = Convert.ToInt32(values[2]);
-
-
-                error1:
-                if (name[i].Length > 15 )
+                while (true)
                 {
-                    Console.WriteLine("Please re-enter the name! Must be 15 chars or less");
-                    name[i] = Console.ReadLine();
-                    goto error1;
-                    
-                }
-                
+                    if (values.Length != 3)
+                    {
+                        Console.WriteLine("Please enter *name grade1 grade 2* using the correct format");
+                        goto error1;
+                    }
+                    else if (values[0].Length > 15 || values[0].Length <= 0)
+                    {
+                        Console.WriteLine("Must be less than 15 characters. Please enter the name again");
+                        values[0] = Console.ReadLine();
+                    }
+                    else
+                        name[i] = values[0];
+                    break;
 
-
-                error2:
-                if (grade1[i] < 0 || 100 < grade1[i])
-                {
-                    Console.WriteLine("Enter grade1 between 0 and 100");
-                    grade1[i] = Convert.ToInt32(Console.ReadLine());
-                    goto error2;
-                    
-                }
-                
-
-                error3:
-                if (grade2[i] < 0 || 100 < grade2[i])
-                {
-                    Console.WriteLine("Enter grade2 between 0 and 100");
-                    grade2[i] = Convert.ToInt32(Console.ReadLine());
-                    goto error3;
                 }
 
+                while (true)
+                {
+
+                    if (int.TryParse(values[1], out grade1[i]) == false)
+                    {
+                        Console.WriteLine("Please enter an integer value");
+                        values[1] = Console.ReadLine();
+                    }
+
+
+                    else if (Convert.ToInt32(values[1]) < 0 || 100 < Convert.ToInt32(values[1]))
+                    {
+                        Console.WriteLine("Please re-enter grade1 value between 0 and 100");
+                        values[1] = Console.ReadLine();
+
+
+                    }
+                    else
+                        grade1[i] = Convert.ToInt32(values[1]);
+                    break;
+                }
+
+                while (true)
+                {
+
+                    if (int.TryParse(values[2], out grade2[i]) == false)
+                    {
+                        Console.WriteLine("Please enter an integer value");
+                        values[2] = Console.ReadLine();
+                    }
+
+
+                    else if (Convert.ToInt32(values[1]) < 0 || 100 < Convert.ToInt32(values[1]))
+                    {
+                        Console.WriteLine("Please re-enter grade1 value between 0 and 100");
+                        values[2] = Console.ReadLine();
+
+
+                    }
+                    else
+                        grade2[i] = Convert.ToInt32(values[2]);
+                    break;
+                }
 
                 average[i] = (grade1[i] + grade2[i]) / 2;
 
-                if (max < average[i])
-                {
-                    max = average[i];
-                }
+                Console.WriteLine($"{name[i]} {grade1[i]} {grade2[i]} {average[i]}");
             }
 
             //Print 3 top max values
             average.CopyTo(averageCopy, 0);
             Array.Sort(averageCopy);
+            
 
             int numberOfMax = 3;
 
-            for (i = n - numberOfMax; i < n; i++)
+            //for (i = n-1; i>5-3-1; i--) //descending
+            for( i=n-3; i<n; i++)       //ascending
             {
-                
-                    for (int j = 0; j < n; j++)
+
+                for (int j = 0; j < 5; j++)
                 {
                     if (averageCopy[i] == average[j])
                     {
-
-
                         Console.WriteLine($"{name[j]} {average[j]}");
                         break;
                     }
